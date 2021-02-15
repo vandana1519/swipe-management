@@ -1,6 +1,5 @@
 package com.hackathon.swipemanagement.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.hackathon.swipemanagement.dto.SwipeRequestReportDto;

@@ -6,7 +6,11 @@ import java.time.LocalTime;
 public class SwipeResponseDto {
 
 	private Long employeeId;
+	private Long facilityId;
+	private LocalDate date;
+	private Long hoursWorked;
 
+	
 	public Long getEmployeeId() {
 		return employeeId;
 	}
@@ -14,11 +18,6 @@ public class SwipeResponseDto {
 	public void setEmployeeId(Long employeeId) {
 		this.employeeId = employeeId;
 	}
-
-	private Long facilityId;
-	private LocalDate date;
-	private LocalTime hoursWorked;
-
 	public Long getFacilityId() {
 		return facilityId;
 	}
@@ -35,11 +34,11 @@ public class SwipeResponseDto {
 		this.date = date;
 	}
 
-	public LocalTime getHoursWorked() {
+	public Long getHoursWorked() {
 		return hoursWorked;
 	}
 
-	public void setHoursWorked(LocalTime hoursWorked) {
+	public void setHoursWorked(Long hoursWorked) {
 		this.hoursWorked = hoursWorked;
 	}
 

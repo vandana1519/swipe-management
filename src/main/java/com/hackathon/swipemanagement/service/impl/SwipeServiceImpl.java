@@ -2,8 +2,9 @@ package com.hackathon.swipemanagement.service.impl;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,6 @@ public class SwipeServiceImpl implements SwipeService {
 
 		Swipe swipe = swipeRepository.getSwipeDetails(employeeId, facilityId);
 		if (swipe == null) {
-			System.out.println("inside if**");
 			Swipe swipe2 = new Swipe();
 			Employees employee = new Employees();
 			employee.setEmployeeId(employeeId);
@@ -60,7 +60,17 @@ public class SwipeServiceImpl implements SwipeService {
 	@Override
 	public List<SwipeResponseDto> getSwipeReport(SwipeRequestReportDto requestDto) {
 		List<Swipe> swipeList = swipeRepository.getSwipeDetailsList(requestDto.getEmployeeId());
-		return null;
+		List<SwipeResponseDto> swipeResponseDto1 = new ArrayList<>();
+		Long totalHoursWorked = 0L;
+		SwipeResponseDto swipeResponseDto = new SwipeResponseDto();
+		for (Swipe swipe : swipeList) {
+			swipeResponseDto.setEmployeeId(swipe.getEmployee().getEmployeeId());
+			swipeResponseDto.setFacilityId(swipe.getFacility().getFacilityId());
+			totalHoursWorked += swipe.getHoursWorked();
+			swipeResponseDto.setHoursWorked(totalHoursWorked);
+			swipeResponseDto1.add(swipeResponseDto);
+		}
+		return swipeResponseDto1;
 	}
 
 }
