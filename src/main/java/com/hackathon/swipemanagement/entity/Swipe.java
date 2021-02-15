@@ -1,7 +1,9 @@
 package com.hackathon.swipemanagement.entity;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,10 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "Swipe")
@@ -25,11 +29,12 @@ public class Swipe {
 	private Long swipeId;
 	private LocalDateTime swipeIn;
 	private LocalDateTime swipeOut;
-	private LocalTime hoursWorked;
 
-	@OneToMany()
-	@JoinColumn(name = "employee_swipe", referencedColumnName = "employeeId")
-	private List<Employees> employee;
+	private Long hoursWorked;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "swipe_employee", referencedColumnName = "employeeId")
+	private Employees employee;
 
 	@OneToOne()
 	@JoinColumn(name = "facility_swipe", referencedColumnName = "facilityId")
@@ -59,24 +64,24 @@ public class Swipe {
 		this.swipeOut = swipeOut;
 	}
 
-	public LocalTime getHoursWorked() {
+	public Long getHoursWorked() {
 		return hoursWorked;
 	}
 
-	public void setHoursWorked(LocalTime hoursWorked) {
+	public void setHoursWorked(Long hoursWorked) {
 		this.hoursWorked = hoursWorked;
-	}
-
-	public List<Employees> getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(List<Employees> employee) {
-		this.employee = employee;
 	}
 
 	public Facility getFacility() {
 		return facility;
+	}
+
+	public Employees getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employees employee) {
+		this.employee = employee;
 	}
 
 	public void setFacility(Facility facility) {
