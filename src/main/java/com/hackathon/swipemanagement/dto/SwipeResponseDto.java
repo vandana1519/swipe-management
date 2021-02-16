@@ -8,7 +8,7 @@ public class SwipeResponseDto {
 	private Long employeeId;
 	private Long facilityId;
 	private LocalDate date;
-	private Long hoursWorked;
+	private LocalTime hoursWorked;
 
 	
 	public Long getEmployeeId() {
@@ -34,11 +34,11 @@ public class SwipeResponseDto {
 		this.date = date;
 	}
 
-	public Long getHoursWorked() {
+	public LocalTime getHoursWorked() {
 		return hoursWorked;
 	}
 
-	public void setHoursWorked(Long hoursWorked) {
+	public void setHoursWorked(LocalTime hoursWorked) {
 		this.hoursWorked = hoursWorked;
 	}
 

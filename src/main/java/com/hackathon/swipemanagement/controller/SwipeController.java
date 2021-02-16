@@ -7,15 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hackathon.swipemanagement.dto.SwipeRequestReportDto;
 import com.hackathon.swipemanagement.dto.SwipeResponseDto;
-import com.hackathon.swipemanagement.entity.Swipe;
+import com.hackathon.swipemanagement.exception.NotFoundException;
 import com.hackathon.swipemanagement.service.SwipeService;
 
 @RestController
@@ -27,14 +24,36 @@ public class SwipeController {
 
 	@PostMapping("/swipeInOut")
 	public ResponseEntity<String> captureSwipeDetails(@RequestParam Long employeeId, @RequestParam Long facilityId) {
-		String swipeDetails = swipeService.captureSwipeDetails(employeeId, facilityId);
-		return new ResponseEntity<>(swipeDetails, HttpStatus.OK);
+		String swipeDetailResponse;
+		try {
+			swipeDetailResponse = swipeService.captureSwipeDetails(employeeId, facilityId);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+		}
+		return new ResponseEntity<>(swipeDetailResponse, HttpStatus.OK);
 
 	}
 	
-	@PutMapping("/swipeReport")
-	public ResponseEntity<List<SwipeResponseDto>> getSwipeReport(@RequestBody SwipeRequestReportDto requestDto) {
-		List<SwipeResponseDto> swipeList= swipeService.getSwipeReport(requestDto);
+	@GetMapping("/swipeReport/byEmployeeId")
+	public ResponseEntity getSwipeReportByEmployeeId(@RequestParam(value ="employeeId") Long employeeId, @RequestParam(value ="date", required = false) String date) {
+		List<SwipeResponseDto> swipeList;
+		try {
+			swipeList = swipeService.getSwipeReportByEmployeeId(employeeId,date);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+		}
+		return new ResponseEntity<>(swipeList, HttpStatus.OK);
+
+	}
+	
+	@GetMapping("/swipeReport/byFacilityId")
+	public ResponseEntity getSwipeReportByFacilityId(@RequestParam(value ="facilityId") Long facilityId, @RequestParam(value ="date", required = false) String date) {
+		List<SwipeResponseDto> swipeList;
+		try {
+			swipeList = swipeService.getSwipeReportByFacilityId(facilityId,date);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+		}
 		return new ResponseEntity<>(swipeList, HttpStatus.OK);
 
 	}

@@ -12,15 +12,19 @@ import com.hackathon.swipemanagement.entity.Swipe;
 public interface SwipeRepository extends JpaRepository<Swipe, Long> {
 
 	@Query(value = "select * from swipe s where s.swipe_employee= :employeeId and s.facility_swipe= :facilityId", nativeQuery = true)
-	public Swipe getSwipeDetails(Long employeeId, Long facilityId);
+	public List<Swipe> getSwipeDetails(Long employeeId, Long facilityId);
 	
-	@Query(value = "select * from swipe s where s.swipe_employee= :employeeId", nativeQuery = true)
-	public List<Swipe> getSwipeDetailsList(Long employeeId);
+	@Query(value = "select * from swipe s where s.swipe_employee= :employeeId and month(s.swipe_in) = :currentMonth", nativeQuery = true)
+	public List<Swipe> getSwipeDetailsListByEmployeeId(Long employeeId, int currentMonth);
 	
-	@Query(value = "select * from swipe s where month(swipe_in) = :month and s.swipe_employee= :employeeId", nativeQuery = true)
-	public List<Swipe> getSwipeDetailsListByMonth(Long employeeId, String month);
 	
-	@Query(value = "select * from swipe s where date(swipe_in) = :date and s.swipe_employee= :employeeId", nativeQuery = true)
-	public List<Swipe> getSwipeDetailsListByDate(Long employeeId,  String date);
+	@Query(value = "select * from swipe s where s.swipe_employee= :employeeId and date(s.swipe_in) = :date", nativeQuery = true)
+	public List<Swipe> getSwipeDetailsListByDate(Long employeeId, String date);
+	
+	@Query(value = "select * from swipe s where s.facility_swipe= :facilityId and date(s.swipe_in) = :date", nativeQuery = true)
+	public List<Swipe> getSwipeDetailsListByDateFacility(Long facilityId, String date);
+
+	@Query(value = "select * from swipe s where s.facility_swipe= :facilityId and month(s.swipe_in) = :currentMonth", nativeQuery = true)
+	public List<Swipe> getSwipeDetailsListByFacilityId(Long facilityId, int currentMonth);
 
 }
